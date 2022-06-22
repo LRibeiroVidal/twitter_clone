@@ -1,42 +1,81 @@
-import * as React from "react"
-import TweetInput from "./TweetInput"
-import "./TweetBox.css"
+import * as React from "react";
+import TweetInput from "./TweetInput";
+import "./TweetBox.css";
+import UserProfile from "../UserProfile/UserProfile";
 
-export default function TweetBox(props) {
-  return (
-    <div className="tweet-box">
-      <TweetInput />
+var charsLeft = 140;
+export default function TweetBox({
+	tweets,
+	userProfile,
+	setTweets,
+	tweetText,
+	setTweetText,
+}) {
+	function handleOnTweetTextChange(evt) {
+		setTweetText(evt.target.value);
+	}
 
-      <div className="tweet-box-footer">
-        <TweetBoxIcons />
-        <TweetCharacterCount />
-        <TweetSubmitButton />
-      </div>
-    </div>
-  )
+	function handleOnSubmit() {
+		var newTweet = {
+			name: userProfile.name,
+			handle: userProfile.handle,
+			text: tweetText,
+			comments: 0,
+			retweets: 0,
+			likes: 0,
+			id: tweets.length,
+		};
+
+		setTweets([...tweets, newTweet]);
+		setTweetText("");
+	}
+
+	return (
+		<div className="tweet-box">
+			<TweetInput value={tweetText} handleOnChange={handleOnTweetTextChange} />
+
+			<div className="tweet-box-footer">
+				<TweetBoxIcons />
+				<TweetCharacterCount text={tweetText} />
+				<TweetSubmitButton
+					handleOnSubmit={handleOnSubmit}
+					setTweetText={setTweetText}
+				/>
+			</div>
+		</div>
+	);
 }
 
 export function TweetBoxIcons() {
-  return (
-    <div className="tweet-box-icons">
-      <i className="fas fa-image"></i>
-      <i className="icon-gif">GIF</i>
-      <i className="far fa-chart-bar"></i>
-      <i className="fas fa-map-marker-alt"></i>
-    </div>
-  )
+	return (
+		<div className="tweet-box-icons">
+			<i className="fas fa-image"></i>
+			<i className="icon-gif">GIF</i>
+			<i className="far fa-chart-bar"></i>
+			<i className="fas fa-map-marker-alt"></i>
+		</div>
+	);
 }
 
-export function TweetCharacterCount(props) {
-  // ADD CODE HERE
-  return <span></span>
+export function TweetCharacterCount({ text }) {
+	// ADD CODE HERE
+	const MAX_CHARS = 140;
+	charsLeft = MAX_CHARS - text.length;
+	return <span>{charsLeft == 140 ? "" : charsLeft}</span>;
 }
 
-export function TweetSubmitButton() {
-  return (
-    <div className="tweet-submit">
-      <i className="fas fa-plus-circle"></i>
-      <button className="tweet-submit-button">Tweet</button>
-    </div>
-  )
+export function TweetSubmitButton({ handleOnSubmit, setTweetText }) {
+	return (
+		<div className="tweet-submit">
+			<i className="fas fa-plus-circle"></i>
+			<button
+				className="tweet-submit-button"
+				onClick={() => {
+					charsLeft >= 0 ? handleOnSubmit() : alert("Too many chars");
+				}}
+			>
+				Tweet
+			</button>
+		</div>
+	);
 }
