@@ -15,6 +15,8 @@ export default function TweetBox({
 		setTweetText(evt.target.value);
 	}
 
+	const isDisabled = tweetText.length === 0 || tweetText.length > 140;
+
 	function handleOnSubmit() {
 		var newTweet = {
 			name: userProfile.name,
@@ -38,8 +40,8 @@ export default function TweetBox({
 				<TweetBoxIcons />
 				<TweetCharacterCount text={tweetText} />
 				<TweetSubmitButton
+					isDisabled={isDisabled}
 					handleOnSubmit={handleOnSubmit}
-					setTweetText={setTweetText}
 				/>
 			</div>
 		</div>
@@ -64,15 +66,14 @@ export function TweetCharacterCount({ text }) {
 	return <span>{charsLeft == 140 ? "" : charsLeft}</span>;
 }
 
-export function TweetSubmitButton({ handleOnSubmit, setTweetText }) {
+export function TweetSubmitButton({ handleOnSubmit, isDisabled }) {
 	return (
 		<div className="tweet-submit">
 			<i className="fas fa-plus-circle"></i>
 			<button
-				className="tweet-submit-button"
-				onClick={() => {
-					charsLeft >= 0 ? handleOnSubmit() : alert("Too many chars");
-				}}
+				className={"tweet-submit-button"}
+				disabled={isDisabled}
+				onClick={handleOnSubmit}
 			>
 				Tweet
 			</button>
