@@ -3,7 +3,6 @@ import TweetInput from "./TweetInput";
 import "./TweetBox.css";
 import UserProfile from "../UserProfile/UserProfile";
 
-var charsLeft = 140;
 export default function TweetBox({
 	tweets,
 	userProfile,
@@ -26,6 +25,7 @@ export default function TweetBox({
 			retweets: 0,
 			likes: 0,
 			id: tweets.length,
+			was_liked: false,
 		};
 
 		setTweets([...tweets, newTweet]);
@@ -62,7 +62,7 @@ export function TweetBoxIcons() {
 export function TweetCharacterCount({ text }) {
 	// ADD CODE HERE
 	const MAX_CHARS = 140;
-	charsLeft = MAX_CHARS - text.length;
+	var charsLeft = MAX_CHARS - text.length;
 	return <span>{charsLeft == 140 ? "" : charsLeft}</span>;
 }
 

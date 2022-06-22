@@ -9,6 +9,7 @@ export default function Feed({
 	setTweets,
 	tweetText,
 	setTweetText,
+	increaseLikes,
 }) {
 	return (
 		<div className="col feed">
@@ -29,7 +30,9 @@ export default function Feed({
 
 			<div className="twitter-feed">
 				{tweets.map((tweet, idx) => {
-					return <Tweet key={idx} tweet={tweet} />;
+					return (
+						<Tweet key={idx} tweet={tweet} increaseLikes={increaseLikes} />
+					);
 				})}
 			</div>
 		</div>

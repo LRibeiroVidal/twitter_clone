@@ -3,7 +3,9 @@ import AvatarIcon from "../AvatarIcon/AvatarIcon";
 import { formatLikes } from "../../utils/format";
 import "./Tweet.css";
 
-export default function Tweet({ tweet }) {
+export default function Tweet({ tweet, increaseLikes }) {
+	const [isLiked, setIsLiked] = React.useState(false);
+
 	return (
 		<div className="tweet" data-tweet-id={tweet.id}>
 			<div className="tweet-avatar">
@@ -17,6 +19,10 @@ export default function Tweet({ tweet }) {
 					numComments={tweet.comments}
 					numRetweets={tweet.retweets}
 					numLikes={tweet.likes}
+					increaseLikes={increaseLikes}
+					id={tweet.id}
+					isLiked={isLiked}
+					setIsLiked={setIsLiked}
 				/>
 			</div>
 		</div>
@@ -37,7 +43,15 @@ export function TweetUserInfo({ name, handle }) {
 	);
 }
 
-export function TweetFooter({ numComments, numRetweets, numLikes }) {
+export function TweetFooter({
+	numComments,
+	numRetweets,
+	numLikes,
+	increaseLikes,
+	id,
+	isLiked,
+	setIsLiked,
+}) {
 	return (
 		<div className="tweet-footer">
 			<span>
@@ -46,11 +60,21 @@ export function TweetFooter({ numComments, numRetweets, numLikes }) {
 			</span>
 			<span>
 				<i className="fa fa-retweet"></i>
-				{numRetweets || 0}
+				{numRetweets}
 			</span>
-			<span>
-				<i className="fas fa-heart"></i>
-				{formatLikes(numLikes ?? 0)}
+			<span
+				onClick={() => {
+					var wasLiked = increaseLikes(id);
+					setIsLiked(wasLiked);
+				}}
+			>
+				<i
+					className="fas fa-heart heart"
+					style={{
+						color: isLiked ? "#f80051" : "gray",
+					}}
+				></i>
+				{formatLikes(numLikes)}
 			</span>
 			<span>
 				<i className="fa fa-envelope"></i>

@@ -12,6 +12,22 @@ export default function App() {
 	const [userProfile, setUserProfile] = React.useState(codepathUserProfile);
 	const [tweets, setTweets] = React.useState([firstTweet]);
 	const [tweetText, setTweetText] = React.useState("");
+
+	function increaseLikes(tweetId) {
+		let selectedTweet = tweets.filter((tweet) => tweet.id == tweetId)[0];
+		if (selectedTweet.was_liked) {
+			selectedTweet.was_liked = false;
+			selectedTweet.likes -= 1;
+		} else {
+			selectedTweet.was_liked = true;
+			selectedTweet.likes += 1;
+		}
+		setTweets([...tweets]);
+		return selectedTweet.was_liked;
+	}
+
+	React.useEffect(() => {}, [tweets]);
+
 	return (
 		<div className="app">
 			<Navbar navLinks={navLinks} />
@@ -23,6 +39,7 @@ export default function App() {
 					userProfile={userProfile}
 					tweetText={tweetText}
 					setTweetText={setTweetText}
+					increaseLikes={increaseLikes}
 				/>
 				<Advertisements />
 			</main>
